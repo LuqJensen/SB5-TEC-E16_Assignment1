@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script type="text/javascript">
+
+url = "http://localhost:9998/resources/r1";
+
+get = function(url, callback) {
+	var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", url, true); // true for asynchronous 
+    xmlHttp.send(null);
+};
+
+post = function(url, input, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("POST", url, true); // true for asynchronous 
+    xmlHttp.send(input);
+};
+
+put = function(url, data, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("PUT", url, true); // true for asynchronous 
+    xmlHttp.send(data);
+};
+
+del = function(url, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("DELETE", url, true); // true for asynchronous 
+    xmlHttp.send(null);
+};
+
+do_get = function () {
+    get(url, function (content) {
+        var textarea = document.getElementById('data');
+        textarea.value = content;
+    });
+};
+do_post = function () {
+    var textarea = document.getElementById('input');
+    post(url, textarea.value, function (content) {
+        textarea.value = content;
+    });
+};
+do_put = function () {
+    var textarea = document.getElementById('data');
+    put(url, textarea.value, function (content) {
+        textarea.value = content;
+    });
+};
+do_delete = function () {
+    del(url, function (content) {
+        var textarea = document.getElementById('data');
+        textarea.value = "done deleting";
+    });
+};
+    </script>
+  </head>
+  <body>
+	<div id="sse">
+      <a href="javascript:do_get()">update</a>
+      <a href="javascript:do_post()">post</a>
+      <a href="javascript:do_put()">put</a>
+      <a href="javascript:do_delete()">delete</a>
+	  <label>
+	  <input type="checkbox" title="Fetch new messeages automatically"/> 
+	  Auto update messages
+	  </label>
+	  <span>
+	  
+	  </span>
+      <br />
+      <textarea rows="25" cols="50" id="data" readonly></textarea>
+    </div>
+	<div id = "send">
+	<textarea rows="5" cols="50" id="input"></textarea>
+	</div>
+  </body>
+</html>
+
