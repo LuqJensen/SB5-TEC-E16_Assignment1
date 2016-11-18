@@ -20,6 +20,7 @@ handler_get = function (request, response) {
     send_header(response);
     response.end(JSON.stringify(messages));
 };
+
 handler_post = function (request, response) {
     request.on('data', function(data) {
 		
@@ -35,15 +36,10 @@ handler_post = function (request, response) {
         response.end(JSON.stringify(3));
     });
 };
-handler_options = function (request, response) {
-    send_header(response);
-    response.end(null);
-};
 
 dispatch = {
     'GET':     handler_get,
-    'POST':    handler_post,
-    'OPTIONS': handler_options,
+    'POST':    handler_post
 };
 
 var server = http.createServer(function (request, response){
