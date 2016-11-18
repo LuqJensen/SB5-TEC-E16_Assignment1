@@ -38,7 +38,7 @@ get = function(url, callback) {
 	var xmlHttp = new XMLHttpRequest(); // The XMLHttpRequest object can be used to request data from a web server. See: http://www.w3schools.com/xml/dom_httprequest.asp
     xmlHttp.onreadystatechange = function() { // Sets the onreadystatechange event.
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) // state 4, status 200 = response ready.
-            callback(xmlHttp.responseText); // Since response is ready, we give it back in the callback function.
+            callback(JSON.parse(xmlHttp.responseText)); // Since response is ready, we give it back in the callback function.
     }
     xmlHttp.open("GET", url, true); // true for asynchronous 
     xmlHttp.send(null);
@@ -57,7 +57,7 @@ post = function(url, input, callback) {
 do_get = function () {
     get(url, function (content) {
         var textarea = document.getElementById('data');
-        textarea.value = content;
+        textarea.value = content.toString().replace(/,/g, "\n");
     });
 };
 do_post = function () {
