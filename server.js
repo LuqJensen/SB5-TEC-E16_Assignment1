@@ -12,20 +12,13 @@ var messages =[];
 send_header = function (response) {
     response.writeHead(200, {'Content-Type': 'application/json',
                              'Access-Control-Allow-Origin': '*',
-                             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'});
+                             'Access-Control-Allow-Methods': 'GET,POST'});
 }
 
 // handlers
 handler_get = function (request, response) {
     send_header(response);
     response.end(JSON.stringify(messages));
-};
-handler_put = function (request, response) {
-    request.on('data', function(data) {
-        console.log(''+data);
-        send_header(response);
-        response.end(JSON.stringify(3));
-    });
 };
 handler_post = function (request, response) {
     request.on('data', function(data) {
@@ -42,10 +35,6 @@ handler_post = function (request, response) {
         response.end(JSON.stringify(3));
     });
 };
-handler_delete = function (request, response) {
-    send_header(response);
-    response.end(JSON.stringify(4));
-};
 handler_options = function (request, response) {
     send_header(response);
     response.end(null);
@@ -53,9 +42,7 @@ handler_options = function (request, response) {
 
 dispatch = {
     'GET':     handler_get,
-    'PUT':     handler_put,
     'POST':    handler_post,
-    'DELETE':  handler_delete,
     'OPTIONS': handler_options,
 };
 
