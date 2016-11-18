@@ -27,7 +27,14 @@ post = function(url, input, callback) {
 do_get = function () {
     get(url, function (content) {
         var textarea = document.getElementById('data');
-        textarea.value = content.toString().replace(/,/g, "\n");
+        
+        var output = "";
+        content.forEach(function(v) 
+        {
+            output += v + "\n\n";
+        });
+        
+        textarea.value = output;
     });
 };
 do_post = function () {
