@@ -2,9 +2,37 @@
 <html>
   <head>
   <link rel="stylesheet" href="style.css">	<!-- Reference to external stylesheet -->
-  <script type="text/javascript">	
+
+  </head>
+	<body>
+		<div id = main>
+			<div id="sse">
+				<label>
+					<input type="checkbox" title="Fetch new messeages automatically" onclick="autoUpdate(this);"/> 
+					Auto update messages
+				</label>
+                <label id="timeLeft">
+                    
+                </label>
+				<br />
+				<textarea rows="25" cols="50" id="data" readonly></textarea>
+			</div>
+			<div id = "send">
+				<textarea rows="5" cols="50" id="input"></textarea>
+			</div>
+			<div>
+				<a href="javascript:do_get()" class="button">Get messages</a>
+				<a href="javascript:do_post()" class="button">Send</a>
+			</div>
+		</div>
+	</body>
+      <script type="text/javascript">	
 
 url = "http://localhost:9998/resources/r1";
+
+var timer;
+var updateInterval = 5;
+var timeToUpdate = updateInterval;
 
 get = function(url, callback) {
 	var xmlHttp = new XMLHttpRequest(); // The XMLHttpRequest object can be used to request data from a web server. See: http://www.w3schools.com/xml/dom_httprequest.asp
@@ -36,29 +64,37 @@ do_post = function () {
     var textarea = document.getElementById('input');
     post(url, textarea.value, function (content) {
         textarea.value = "";
+        do_get();
     });
 };
 
+function autoUpdate(checkbox)
+{
+    if (checkbox.checked)
+    {
+        timer = setInterval(function() 
+        {
+            timeToUpdate -= 1;
+            
+            if (timeToUpdate <= 0) 
+            {
+                timeToUpdate = updateInterval;
+                do_get();
+            }
+            
+            var label = document.getElementById('timeLeft');
+            label.innerHTML = timeToUpdate; 
+        }, 1000);
+    }
+    else if (timer)
+    {
+        clearInterval(timer);
+        var label = document.getElementById('timeLeft');
+        label.innerHTML = ""; 
+    }
+}
+
     </script>
-  </head>
-	<body>
-		<div id = main>
-			<div id="sse">
-				<label>
-					<input type="checkbox" title="Fetch new messeages automatically"/> 
-					Auto update messages
-				</label>
-				<br />
-				<textarea rows="25" cols="50" id="data" readonly></textarea>
-			</div>
-			<div id = "send">
-				<textarea rows="5" cols="50" id="input"></textarea>
-			</div>
-			<div>
-				<a href="javascript:do_get()" class="button">Get messages</a>
-				<a href="javascript:do_post()" class="button">Send</a>
-			</div>
-		</div>
-	</body>
 </html>
+
 
