@@ -6,7 +6,8 @@ var http   = require('http');
 const PORT = 9998;
 
 var messageCount = 0; 
-var messages =["Johan", "Chris"]; 
+var maxMessages = 10; 
+var messages =[]; 
 
 send_header = function (response) {
     response.writeHead(200, {'Content-Type': 'application/json',
@@ -30,7 +31,12 @@ handler_post = function (request, response) {
     request.on('data', function(data) {
 		
         console.log('Messeage posted: '+data);
+		if (messageCount >= maxMessages)
+		{
+			messages.shift(); 
+		}
 		messages.push( String(data));	//Must be cast to String - else read as ascii 
+		messageCount++; 
 		
         send_header(response);
         response.end(JSON.stringify(3));
